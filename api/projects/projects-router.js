@@ -30,10 +30,8 @@ router.put('/:id', validateProjectId, validateProjectPost, (req, res, next) => {
         name: req.name,
         description: req.description
     })
-        .then(() => {
-            return Projects.get(req.params.id)
-        })
         .then(project => {
+            console.log(req.body)
             res.json(project)
         })
         .catch(next)
