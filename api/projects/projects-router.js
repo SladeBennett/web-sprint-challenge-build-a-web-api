@@ -19,14 +19,14 @@ router.get('/:id', validateProjectId, (req, res) => {
     res.json(req.project)
 })
 router.post('/', validateProjectPost, (req, res, next) => {
-    Projects.insert({ name: req.name, description: req.description })
-    .then(newPost => {
-        res.status(201).json(newPost)
-    })
-    .catch(next)
+    Projects.insert({ name: req.name, description: req.description, completed: true })
+        .then(newPost => {
+            res.status(201).json(newPost)
+        })
+        .catch(next)
 })
 router.put('/:id', validateProjectId, validateProjectPost, (req, res, next) => {
-    Projects.update(req.params.id, { name: req.name, description: req.description })
+    Projects.update(req.params.id, { name: req.name, description: req.description, completed: true })
         .then(() => {
             return Projects.get(req.params.id)
         })
@@ -37,9 +37,10 @@ router.put('/:id', validateProjectId, validateProjectPost, (req, res, next) => {
 })
 
 router.delete('/:id', validateProjectId, async (req, res, next) => {
-    try{
-        await Projects.remove(req.params.id)
-    } catch(err) {
+    try {
+        const deleted = await Projects.remove(req.params.id)
+        res.status(200).json(deleted)
+    } catch (err) {
         next(err)
     }
 })
@@ -47,7 +48,7 @@ router.get('/:id/actions', validateProjectId, async (req, res, next) => {
     try {
         const actions = await Projects.getProjectActions(req.params.id)
         res.status(200).json(actions)
-    } catch(err) {
+    } catch (err) {
         next(err)
     }
 })

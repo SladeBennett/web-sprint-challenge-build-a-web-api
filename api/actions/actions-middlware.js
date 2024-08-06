@@ -21,7 +21,6 @@ async function validateActionId(req, res, next) {
 function validateActionPost(req, res, next) {
     const { project_id, description, notes } = req.body
     if (!project_id ||
-        !project_id.trim() ||
         !description ||
         !description.trim() ||
         !notes ||
@@ -31,7 +30,7 @@ function validateActionPost(req, res, next) {
             message: 'Project Id, Description, and Notes fields are required'
         })
     } else {
-        req.project_id = project_id.trim()
+        req.project_id = project_id
         req.description = description.trim()
         req.notes = notes.trim()
         next()
