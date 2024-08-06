@@ -35,12 +35,6 @@ function validateProjectPost(req, res, next) {
     }
 }
 
-
-
-
-
-
-
 module.exports = {
     validateProjectId,
     validateProjectPost,
