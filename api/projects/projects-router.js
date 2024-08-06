@@ -28,14 +28,11 @@ router.post('/', validateProjectPost, (req, res, next) => {
 router.put('/:id', validateProjectId, validateProjectPost, (req, res, next) => {
     Projects.update(req.params.id, { name: req.name, description: req.description, completed: true })
         .then(() => {
-            return Projects.get(req.params.id)
-        })
-        .then(project => {
-            res.json(project)
+            const result = Projects.get(req.params.id)
+            res.status(200).json(result)
         })
         .catch(next)
 })
-
 router.delete('/:id', validateProjectId, async (req, res, next) => {
     try {
         const deleted = await Projects.remove(req.params.id)
@@ -52,7 +49,6 @@ router.get('/:id/actions', validateProjectId, async (req, res, next) => {
         next(err)
     }
 })
-
 router.use((err, req, res, next) => { //eslint-disable-line
     res.status(err.status || 500).json({
         customMessage: 'disaster strikes in projects router',
