@@ -18,6 +18,30 @@ async function validateProjectId(req, res, next) {
     }
 }
 
+function validateProjectPost(req, res, next) {
+    const { name, description } = req.body
+    if (!name ||
+        !name.trim() ||
+        !description ||
+        !description.trim()
+    ) {
+        res.status(400).json({
+            message: 'Name and Description fields are required'
+        })
+    } else {
+        req.name = name.trim()
+        req.description = description.trim()
+        next()
+    }
+}
+
+
+
+
+
+
+
 module.exports = {
     validateProjectId,
+    validateProjectPost,
 }
