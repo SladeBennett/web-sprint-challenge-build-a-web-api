@@ -1,23 +1,32 @@
 const express = require('express')
+const {
+    validateProjectId
+} = require('./projects-middleware')
+
+const Projects = require('./projects-model')
 
 const router = express.Router()
 
 router.get('/', (req, res, next) => {
-    console.log('hello from GET')
+    Projects.get()
+    .then(projects => {
+        res.json(projects)
+    })
+    .catch(next)
 })
-router.get('/:id', (req, res, next) => {
-    console.log('hello from GET ID')
+router.get('/:id', validateProjectId, (req, res) => {
+    res.json(req.project)
 })
 router.post('/', (req, res, next) => {
     console.log('hello from POST')
 })
-router.put('/:id', (req, res, next) => {
+router.put('/:id', validateProjectId, (req, res, next) => {
     console.log('hello from PUT')
 })
-router.delete('/:id', (req, res, next) => {
+router.delete('/:id', validateProjectId, (req, res, next) => {
     console.log('hello from DELETE')
 })
-router.get('/:id/actions', (req, res, next) => {
+router.get('/:id/actions', validateProjectId, (req, res, next) => {
     console.log('hello from GET ACTIONS')
 })
 
