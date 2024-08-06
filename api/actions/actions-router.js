@@ -1,4 +1,7 @@
 const express = require('express')
+const {
+    validateActionId
+} = require('./actions-middlware')
 
 const Actions = require('./actions-model')
 
@@ -13,8 +16,8 @@ router.get('/', async (req, res, next) => {
         next(err)
     }
 })
-router.get('/:id', (req, res, next) => {
-    console.log('hello from GET ID')
+router.get('/:id', validateActionId, (req, res, next) => {
+    res.json(req.action)
 })
 router.post('/', (req, res, next) => {
     console.log('hello from POST')
