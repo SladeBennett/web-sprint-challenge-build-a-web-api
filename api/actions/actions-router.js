@@ -1,6 +1,7 @@
 const express = require('express')
 const {
-    validateActionId
+    validateActionId,
+    validateActionPost,
 } = require('./actions-middlware')
 
 const Actions = require('./actions-model')
@@ -16,16 +17,24 @@ router.get('/', async (req, res, next) => {
         next(err)
     }
 })
-router.get('/:id', validateActionId, (req, res, next) => {
+router.get('/:id', validateActionId, (req, res) => {
     res.json(req.action)
 })
-router.post('/', (req, res, next) => {
-    console.log('hello from POST')
+router.post('/', validateActionPost, (req, res, next) => {
+    Actions.insert({
+        project_id: req.project_id,
+        description: req.description,
+        notes: req.notes
+    })
+    .then(newAction => {
+        res.status(201).json(newAction)
+    })
+    .catch(next)
 })
-router.put('/:id', (req, res, next) => {
+router.put('/:id', validateActionId, validateActionPost, (req, res, next) => {
     console.log('hello from PUT')
 })
-router.delete('/:id', (req, res, next) => {
+router.delete('/:id', validateActionId, (req, res, next) => {
     console.log('hello from DELETE')
 })
 
