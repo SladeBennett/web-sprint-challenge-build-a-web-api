@@ -20,13 +20,14 @@ async function validateProjectId(req, res, next) {
 
 function validateProjectPost(req, res, next) {
     const { name, description, completed } = req.body
-    if (!name || !description || !completed) {
+    if (!name || !description || completed === undefined) {
         res.status(400).json({
             message: 'Name, Description, and Completed fields are required'
         })
     } else {
         req.name = name.trim()
         req.description = description.trim()
+        req.completed = completed
         next()
     }
 }
