@@ -32,7 +32,18 @@ router.post('/', validateActionPost, (req, res, next) => {
     .catch(next)
 })
 router.put('/:id', validateActionId, validateActionPost, (req, res, next) => {
-    console.log('hello from PUT')
+    Actions.update(req.params.id, {
+        project_id: req.project_id,
+        description: req.description,
+        notes: req.notes
+    })
+    .then(() => {
+        return Actions.get(req.params.id)
+    })
+    .then(action => {
+        res.json(action)
+    })
+    .catch(next)
 })
 router.delete('/:id', validateActionId, async (req, res, next) => {
     try{
@@ -41,7 +52,6 @@ router.delete('/:id', validateActionId, async (req, res, next) => {
         next(err)
     }
 })
-
 
 router.use((err, req, res, next) => { //eslint-disable-line
     res.status(err.status || 500).json({
