@@ -25,9 +25,17 @@ router.post('/', validateProjectPost, (req, res, next) => {
     })
     .catch(next)
 })
-router.put('/:id', validateProjectId, (req, res, next) => {
-    console.log('hello from PUT')
+router.put('/:id', validateProjectId, validateProjectPost, (req, res, next) => {
+    Projects.update(req.params.id, { name: req.name, description: req.description })
+        .then(() => {
+            return Projects.get(req.params.id)
+        })
+        .then(project => {
+            res.json(project)
+        })
+        .catch(next)
 })
+
 router.delete('/:id', validateProjectId, (req, res, next) => {
     console.log('hello from DELETE')
 })
