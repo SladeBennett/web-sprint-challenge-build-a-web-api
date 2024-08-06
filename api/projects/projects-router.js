@@ -19,7 +19,11 @@ router.get('/:id', validateProjectId, (req, res) => {
     res.json(req.project)
 })
 router.post('/', validateProjectPost, (req, res, next) => {
-    console.log('hello from POST')
+    Projects.insert({ name: req.name, description: req.description })
+    .then(newPost => {
+        res.status(201).json(newPost)
+    })
+    .catch(next)
 })
 router.put('/:id', validateProjectId, (req, res, next) => {
     console.log('hello from PUT')
