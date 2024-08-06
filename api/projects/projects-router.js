@@ -25,13 +25,15 @@ router.post('/', validateProjectPost, (req, res, next) => {
         })
         .catch(next)
 })
-router.put('/:id', validateProjectId, validateProjectPost, (req, res, next) => {
-    Projects.update(req.params.id, { name: req.name, description: req.description, completed: true })
-        .then(() => {
-            const result = Projects.get(req.params.id)
-            res.status(200).json(result)
-        })
-        .catch(next)
+router.put('/:id', validateProjectId, validateProjectPost, async (req, res, next) => {
+    try {
+        const updated = await Projects.update(req.params.id,
+            { name: req.name, description: req.description }
+        )
+        res.json(updated)
+    } catch (err) {
+        next(err)
+    }
 })
 router.delete('/:id', validateProjectId, async (req, res, next) => {
     try {

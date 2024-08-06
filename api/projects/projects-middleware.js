@@ -27,7 +27,7 @@ function validateProjectPost(req, res, next) {
         !completed
     ) {
         res.status(400).json({
-            message: 'Name and Description fields are required'
+            message: 'Name, Description, and Completed fields are required'
         })
     } else {
         req.name = name.trim()
