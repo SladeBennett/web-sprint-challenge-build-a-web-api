@@ -34,8 +34,12 @@ router.post('/', validateActionPost, (req, res, next) => {
 router.put('/:id', validateActionId, validateActionPost, (req, res, next) => {
     console.log('hello from PUT')
 })
-router.delete('/:id', validateActionId, (req, res, next) => {
-    console.log('hello from DELETE')
+router.delete('/:id', validateActionId, async (req, res, next) => {
+    try{
+        await Actions.remove(req.params.id)
+    } catch(err) {
+        next(err)
+    }
 })
 
 
