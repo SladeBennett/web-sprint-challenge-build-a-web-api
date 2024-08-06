@@ -9,10 +9,14 @@ const router = express.Router()
 
 router.get('/', (req, res, next) => {
     Projects.get()
-    .then(projects => {
-        res.json(projects)
-    })
-    .catch(next)
+        .then(projects => {
+            if (!projects) {
+                res.json([])
+            } else {
+                res.json(projects)
+            }
+        })
+        .catch(next)
 })
 router.get('/:id', validateProjectId, (req, res) => {
     res.json(req.project)
