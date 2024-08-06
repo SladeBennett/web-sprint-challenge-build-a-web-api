@@ -35,7 +35,8 @@ router.put('/:id', validateActionId, validateActionPost, (req, res, next) => {
     Actions.update(req.params.id, {
         project_id: req.project_id,
         description: req.description,
-        notes: req.notes
+        notes: req.notes,
+        completed: true
     })
     .then(() => {
         return Actions.get(req.params.id)
